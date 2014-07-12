@@ -1,0 +1,27 @@
+[22:41:39] [main/INFO]: Setting user: ForgeDevName
+[22:41:39] [Client thread/INFO]: LWJGL Version: 2.9.0
+[22:41:42] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
+[22:41:43] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[22:41:43] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[22:41:43] [Sound Library Loader/INFO]: Sound engine started
+[22:41:43] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
+[22:41:43] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[22:41:43] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[22:41:44] [Sound Library Loader/INFO]: Sound engine started
+[22:41:45] [MCO Availability Checker #1/ERROR]: Couldn't connect to Realms
+[22:41:46] [Server thread/INFO]: Starting integrated minecraft server version 1.7.2
+[22:41:46] [Server thread/INFO]: Generating keypair
+[22:41:47] [Server thread/INFO]: Preparing start region for level 0
+[22:41:47] [Server thread/INFO]: ForgeDevName[local:E:71903107] logged in with entity id 171 at (-405.40030865331346, 4.0, -1324.042964696434)
+[22:41:47] [Server thread/INFO]: ForgeDevName joined the game
+[22:44:40] [Server thread/INFO]: Saving and pausing game...
+[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[22:44:41] [Server thread/INFO]: Stopping server
+[22:44:41] [Server thread/INFO]: Saving players
+[22:44:41] [Server thread/INFO]: Saving worlds
+[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[22:44:42] [Client thread/INFO]: Stopping!
