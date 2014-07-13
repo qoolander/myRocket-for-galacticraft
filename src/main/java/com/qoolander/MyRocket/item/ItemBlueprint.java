@@ -1,13 +1,14 @@
 package com.qoolander.MyRocket.item;
 
-/**
- * Created by Sam on 12/07/2014.
- */
+
+import com.qoolander.MyRocket.creativeTab.CreativeTabMyRocket;
+
 public class ItemBlueprint extends ItemMyRocket {
 
     public ItemBlueprint(){
         super();
         this.setUnlocalizedName("bluePrint");
+
     }
 
 

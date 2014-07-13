@@ -1,6 +1,7 @@
 package com.qoolander.MyRocket.item;
 
 
+import com.qoolander.MyRocket.creativeTab.CreativeTabMyRocket;
 import com.qoolander.MyRocket.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ItemMyRocket extends Item{
     public ItemMyRocket(){
         super();
+        this.setCreativeTab(CreativeTabMyRocket.MyRocketTab);
     }
 
     @Override

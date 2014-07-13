@@ -1,27 +1,31 @@
-[22:41:39] [main/INFO]: Setting user: ForgeDevName
-[22:41:39] [Client thread/INFO]: LWJGL Version: 2.9.0
-[22:41:42] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
-[22:41:43] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
-[22:41:43] [Client thread/INFO]: Created: 256x256 textures/items-atlas
-[22:41:43] [Sound Library Loader/INFO]: Sound engine started
-[22:41:43] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
-[22:41:43] [Client thread/INFO]: Created: 256x256 textures/items-atlas
-[22:41:43] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
-[22:41:44] [Sound Library Loader/INFO]: Sound engine started
-[22:41:45] [MCO Availability Checker #1/ERROR]: Couldn't connect to Realms
-[22:41:46] [Server thread/INFO]: Starting integrated minecraft server version 1.7.2
-[22:41:46] [Server thread/INFO]: Generating keypair
-[22:41:47] [Server thread/INFO]: Preparing start region for level 0
-[22:41:47] [Server thread/INFO]: ForgeDevName[local:E:71903107] logged in with entity id 171 at (-405.40030865331346, 4.0, -1324.042964696434)
-[22:41:47] [Server thread/INFO]: ForgeDevName joined the game
-[22:44:40] [Server thread/INFO]: Saving and pausing game...
-[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[22:44:40] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[22:44:41] [Server thread/INFO]: Stopping server
-[22:44:41] [Server thread/INFO]: Saving players
-[22:44:41] [Server thread/INFO]: Saving worlds
-[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[22:44:41] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[22:44:42] [Client thread/INFO]: Stopping!
+[09:58:50] [main/INFO]: Setting user: ForgeDevName
+[09:58:51] [Client thread/INFO]: LWJGL Version: 2.9.0
+[09:58:54] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
+[09:58:55] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[09:58:55] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[09:58:55] [Sound Library Loader/INFO]: Sound engine started
+[09:58:55] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:My rocket  for Galacticraft
+[09:58:55] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[09:58:55] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[09:58:56] [Sound Library Loader/INFO]: Sound engine started
+[09:58:56] [MCO Availability Checker #1/ERROR]: Couldn't connect to Realms
+[09:58:59] [Server thread/INFO]: Starting integrated minecraft server version 1.7.2
+[09:58:59] [Server thread/INFO]: Generating keypair
+[09:59:00] [Server thread/INFO]: Preparing start region for level 0
+[09:59:00] [Server thread/INFO]: ForgeDevName[local:E:7808df5a] logged in with entity id 171 at (-391.9758431389528, 5.0, -1321.988548543559)
+[09:59:00] [Server thread/INFO]: ForgeDevName joined the game
+[09:59:00] [Server thread/INFO]: Saving and pausing game...
+[09:59:00] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[09:59:01] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[09:59:01] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[09:59:58] [Server thread/INFO]: Saving and pausing game...
+[09:59:58] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[09:59:58] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[09:59:58] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[10:00:00] [Server thread/INFO]: Stopping server
+[10:00:00] [Server thread/INFO]: Saving players
+[10:00:00] [Server thread/INFO]: Saving worlds
+[10:00:00] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[10:00:00] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[10:00:00] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[10:00:01] [Client thread/INFO]: Stopping!

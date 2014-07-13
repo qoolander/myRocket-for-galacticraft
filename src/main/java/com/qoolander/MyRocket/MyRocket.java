@@ -1,6 +1,7 @@
 package com.qoolander.MyRocket;
 
 import com.qoolander.MyRocket.handler.ConfigurationHandler;
+import com.qoolander.MyRocket.init.ModBlocks;
 import com.qoolander.MyRocket.init.ModItems;
 import com.qoolander.MyRocket.proxy.IProxy;
 import com.qoolander.MyRocket.reference.Reference;
@@ -24,6 +25,7 @@ public class MyRocket {
     public void PreInit(FMLPreInitializationEvent event) {
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         ModItems.init();
+        ModBlocks.init();
         LogHelper.info("Pre initialization complete!");
     }
 
