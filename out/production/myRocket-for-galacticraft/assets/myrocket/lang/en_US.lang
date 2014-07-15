@@ -1,2 +1,3 @@
 item.myrocket:bluePrint.name=Blueprint
 tile.myrocket:buildingFrame.name=Construction frame
+tile.myrocket:scanner.name=scanner
