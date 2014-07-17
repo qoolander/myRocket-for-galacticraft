@@ -5,7 +5,11 @@ import com.qoolander.MyRocket.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import javax.swing.Icon;
+
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import scala.reflect.macros.runtime.Names;
 
 import javax.swing.*;
@@ -18,17 +22,30 @@ public class BlockScanner extends BlockMyRocket{
     }
 
     @SideOnly(Side.CLIENT)
-    public static Icon topIcon;
+    public static IIcon topIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon bottomIcon;
+    public static IIcon bottomIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon sideIcon;
+    public static IIcon sideIcon;
+    @SideOnly(Side.CLIENT)
+    public static IIcon frontIcon;
+    @SideOnly(Side.CLIENT)
+    public static IIcon backIcon;
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister icon) {
-        topIcon = icon.registerIcon((this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") +1) +"_top"));
-        bottomIcon = icon.registerIcon((this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") +1) + "_bottom"));
-        sideIcon = icon.registerIcon((this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") +1) + "_side"));
+    public void registerBlockIcons(IIconRegister icon) {
+       topIcon = icon.registerIcon("myrocket:scanner_top");
+       bottomIcon = icon.registerIcon("myrocket:scanner_bottem");
+       sideIcon = icon.registerIcon("myrocket:scanner_sides");
+       frontIcon = icon.registerIcon("myrocket:scanner_front");
+       backIcon = icon.registerIcon("myrocket:scanner_back");
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int metadata) {
+        return side == 1 ? this.topIcon : (side == 0 ? this.bottomIcon : (side != metadata ? sideIcon : frontIcon));
+    }
+
 }

@@ -7,16 +7,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 public class CreativeTabMyRocket {
-    public static final CreativeTabs MyRocketTab = new CreativeTabs(Reference.MOD_ID) {
+    public static final CreativeTabs MyRocketTab = new CreativeTabs(Reference.MOD_ID.toLowerCase()) {
         @Override
         public Item getTabIconItem() {
             return ModItems.bluePrint;
         }
 
-
-        @Override
-        public String getTranslatedTabLabel() {
-            return "My rocket";
-        }
     };
 }
