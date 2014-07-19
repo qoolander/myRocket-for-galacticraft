@@ -21,6 +21,12 @@ public class BlockFrame extends BlockMyRocket {
 
     @SideOnly(Side.CLIENT)
     @Override
+    public boolean canRenderInPass(int pass) {
+        return super.canRenderInPass(pass);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
     public boolean isOpaqueCube(){
         return false;
     }
