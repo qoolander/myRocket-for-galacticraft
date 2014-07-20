@@ -2,19 +2,25 @@ package com.qoolander.MyRocket.block;
 
 
 import com.qoolander.MyRocket.tileEntity.TileEntityScanner;
+import com.qoolander.MyRocket.utility.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import io.netty.handler.logging.LogLevel;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
+
 
 public class BlockScanner extends BlockMyRocket{
     public BlockScanner(){
@@ -102,7 +108,7 @@ public class BlockScanner extends BlockMyRocket{
             System.out.println("No frames found by scanner!");
         }
 
-
+        LogHelper.info(IsNextToCuboidFrames(new Vector3(x, y, z), world) ? "found cube!" : "Cube not found");
 
     }
 
@@ -118,50 +124,182 @@ public class BlockScanner extends BlockMyRocket{
         List<PosBlock> frames = new ArrayList<PosBlock>();
 
 
-        Vector3[] adjacentPositions;
-        adjacentPositions = new Vector3[6];
 
         int x = blockPos.x;
         int y = blockPos.y;
         int z = blockPos.z;
 
-        adjacentPositions[0] = new Vector3(x+1, y, z);
-        adjacentPositions[1] = new Vector3(x-1, y, z);
-        adjacentPositions[2] = new Vector3(x, y+1, z);
-        adjacentPositions[3] = new Vector3(x, y-1, z);
-        adjacentPositions[4] = new Vector3(x, y, z+1);
-        adjacentPositions[5] = new Vector3(x, y, z-1);
-        for (int i = 0; i < adjacentPositions.length; i++) {
-            Block blockToTest = world.getBlock(adjacentPositions[i].x, adjacentPositions[i].y, adjacentPositions[i].z);
+        LogHelper.info("Adjacent frames: " +getNumberOfAdjacentFrames(blockPos, world));
 
-            if(blockToTest instanceof BlockFrame){
-                PosBlock posBlock = new PosBlock(adjacentPositions[i], blockToTest);
+        PosBlock innitialBlock = getAdjacentBlock(blockPos, world);
 
-                allreadyExists = false;
-                for(int l = 0; l < blocksPartOfFrame.size(); l++){
-                    if(blocksPartOfFrame.toArray()[l] == posBlock){
-                        allreadyExists = true;
-                        break;
-                    }
+        PosBlock firstCorner = new PosBlock();
+
+        if(innitialBlock != null){
+            //If next to a block, continue checking
+
+            if(!isCorner(innitialBlock.position, world)){
+                //Not On a corner
+                firstCorner.position = getCorner(innitialBlock.position, world, Dir.posX);
+                if(firstCorner.position==null){
+                    firstCorner.position = getCorner(innitialBlock.position, world, Dir.posY);
                 }
-                if(!allreadyExists){
-                    frames.add(posBlock);
+                if(firstCorner.position==null){
+                    firstCorner.position = getCorner(innitialBlock.position, world, Dir.posZ);
                 }
+            }else{
+                //Is on a corner
+                firstCorner = innitialBlock.clone();
+            }
+
+            return firstCorner.position != null;
+        }else{
+            return false;
+        }
+    }
+
+    public int getNumberOfAdjacentFrames(Vector3 blockPos, World world){
+        Vector3[] adjacentBlocks = new Vector3[6];
+
+        int result = 0;
+
+        int x = blockPos.x;
+        int y = blockPos.y;
+        int z = blockPos.z;
+
+        adjacentBlocks[0] = new Vector3(x+1, y, z);
+        adjacentBlocks[1] = new Vector3(x-1, y, z);
+        adjacentBlocks[2] = new Vector3(x, y+1, z);
+        adjacentBlocks[3] = new Vector3(x, y-1, z);
+        adjacentBlocks[4] = new Vector3(x, y, z+1);
+        adjacentBlocks[5] = new Vector3(x, y, z-1);
+
+        for(int i = 0; i < adjacentBlocks.length; i++){
+            if(world.getBlock(adjacentBlocks[i].x, adjacentBlocks[i].y, adjacentBlocks[i].z) instanceof BlockFrame){
+                result++;
             }
         }
 
+        return result;
+    }
+
+    PosBlock getAdjacentBlock(Vector3 blockPos, World world){
+        Vector3[] adjacentBlocks = new Vector3[6];
+
+        int x = blockPos.x;
+        int y = blockPos.y;
+        int z = blockPos.z;
+
+        adjacentBlocks[0] = new Vector3(x+1, y, z);
+        adjacentBlocks[1] = new Vector3(x-1, y, z);
+        adjacentBlocks[2] = new Vector3(x, y+1, z);
+        adjacentBlocks[3] = new Vector3(x, y-1, z);
+        adjacentBlocks[4] = new Vector3(x, y, z+1);
+        adjacentBlocks[5] = new Vector3(x, y, z-1);
+
+        for(int i = 0; i < adjacentBlocks.length; i++){
+            if(world.getBlock(adjacentBlocks[i].x, adjacentBlocks[i].y, adjacentBlocks[i].z) instanceof BlockFrame){
+                return new PosBlock(adjacentBlocks[i], world.getBlock(adjacentBlocks[i].x, adjacentBlocks[i].y, adjacentBlocks[i].z));
+            }
+        }
+        return null;
+    }
+
+    enum Dir {
+        posX, posY, posZ, negX, negY, negZ
+    }
+
+    Vector3 getNextFrame(Vector3 pos, World world, Dir dir) {
+        Vector3 posToTest = pos.clone();
+        switch (dir) {
+            case posX:
+                posToTest.x++;
+                break;
+            case posY:
+                posToTest.y++;
+                break;
+            case posZ:
+                  posToTest.z++;
+                break;
+            case negX:
+                posToTest.x--;
+                break;
+            case negY:
+                posToTest.y--;
+                break;
+            case negZ:
+                posToTest.z--;
+                break;
+        }
+        if (world.getBlock(posToTest.x, posToTest.y, posToTest.z) instanceof BlockFrame) {
+            return posToTest;
+        }else{
+            return null;
+        }
+    }
+
+    public Vector3 getCorner(Vector3 pos, World world, Dir dir) {
+        Vector3 result = pos.clone();
+        Vector3 nextFramePos = pos.clone();
+        while (true) {
+            nextFramePos = getNextFrame(nextFramePos, world, dir);
+            if (nextFramePos == null) return null;
+
+            if (isCorner(nextFramePos, world)) {
+                return nextFramePos;
+            }
+        }
+    }
+
+    public boolean isCorner(Vector3 pos, World world){
+        if(getNumberOfAdjacentFrames(pos, world) == 3) {
+            if ((getSidesOfConnectionsFromFrames(pos, world).contains(Dir.posX) || getSidesOfConnectionsFromFrames(pos, world).contains(Dir.negX)) && (getSidesOfConnectionsFromFrames(pos, world).contains(Dir.posY) || getSidesOfConnectionsFromFrames(pos, world).contains(Dir.negY)) && (getSidesOfConnectionsFromFrames(pos, world).contains(Dir.posZ) || getSidesOfConnectionsFromFrames(pos, world).contains(Dir.negZ))) {
+                return true;
+            }
+        }
         return false;
     }
+
+    public EnumSet<Dir> getSidesOfConnectionsFromFrames(Vector3 pos, World world){
+        EnumSet<Dir> result = EnumSet.of(Dir.negX,Dir.posX);
+        result.clear();
+
+        if(world.getBlock(pos.x + 1, pos.y, pos.z) instanceof BlockFrame){
+            result.add(Dir.posX);
+        }
+        if(world.getBlock(pos.x - 1, pos.y, pos.z) instanceof BlockFrame){
+            result.add(Dir.negX);
+        }
+        if(world.getBlock(pos.x, pos.y + 1, pos.z) instanceof BlockFrame){
+            result.add(Dir.posY);
+        }
+        if(world.getBlock(pos.x, pos.y - 1, pos.z) instanceof BlockFrame){
+            result.add(Dir.negY);
+        }
+        if(world.getBlock(pos.x, pos.y, pos.z + 1) instanceof BlockFrame){
+            result.add(Dir.posZ);
+        }
+        if(world.getBlock(pos.x, pos.y, pos.z - 1) instanceof BlockFrame){
+            result.add(Dir.negZ);
+        }
+
+        return result;
+
+    }
+
 }
 
 class PosBlock {
     Vector3 position;
     Block block;
 
-
     public PosBlock(Vector3 Pposition, Block Pblock){
         position = Pposition;
         block = Pblock;
+    }
+
+    public PosBlock clone(){
+        return new PosBlock(this.position, this.block);
     }
 
     public PosBlock(){
@@ -169,15 +307,3 @@ class PosBlock {
     }
 }
 
-class Vector3{
-    int x;
-    int y;
-    int z;
-
-    Vector3(int _x, int _y, int _z){
-        x = _x;
-        y = _y;
-        z = _z;
-    }
-
-}

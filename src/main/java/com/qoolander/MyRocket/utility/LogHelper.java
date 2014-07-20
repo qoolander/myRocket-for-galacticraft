@@ -1,8 +1,10 @@
 package com.qoolander.MyRocket.utility;
 
+import com.qoolander.MyRocket.block.Vector3;
 import com.qoolander.MyRocket.reference.Reference;
 import cpw.mods.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.pattern.LevelPatternConverter;
 
 
 public class LogHelper {
@@ -50,4 +52,6 @@ public class LogHelper {
     {
         log(Level.WARN, object);
     }
+
+    public static void printCoords(Vector3 coords, Level logLevel){log(logLevel, "Position is X: " + coords.x + ", Y: " + coords.y + ", Z: " + coords.z);};
 }
