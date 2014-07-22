@@ -7,18 +7,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import io.netty.handler.logging.LogLevel;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -118,12 +115,11 @@ public class BlockScanner extends BlockMyRocket{
         return side == 1 ? this.topIcon : (side == 0 ? this.bottomIcon : (side != metadata ? sideIcon : frontIcon));
     }
 
-    boolean allreadyExists;
 
     public boolean IsNextToCuboidFrames(Vector3 blockPos, World world){
         List<PosBlock> frames = new ArrayList<PosBlock>();
 
-
+        List<CornerFrame> corners = new ArrayList<CornerFrame>();
 
         int x = blockPos.x;
         int y = blockPos.y;
@@ -147,15 +143,64 @@ public class BlockScanner extends BlockMyRocket{
                 if(firstCorner.position==null){
                     firstCorner.position = getCorner(innitialBlock.position, world, Dir.posZ);
                 }
+                if(firstCorner.position==null){
+                    return false;
+                }
             }else{
                 //Is on a corner
                 firstCorner = innitialBlock.clone();
             }
+            EnumSet<Dir> sides = getSidesOfConnectionsFromFrames(firstCorner.position, world);
+            CornerFrame corner = new CornerFrame(sides.contains(Dir.posX), sides.contains(Dir.negX), sides.contains(Dir.posY), sides.contains(Dir.negY), sides.contains(Dir.posZ), sides.contains(Dir.negZ));
+            corner.position = firstCorner.position;
 
-            return firstCorner.position != null;
+            corners.add(corner);
+
+            while(true){
+                if(walkPath(corners.get(corners.size()-1), world) == null){
+                    break;
+                }
+                boolean add = true;
+                CornerFrame temp = walkPath(corners.get(corners.size()-1), world);
+                for(int i = 0; i < corners.size(); i++){
+                    if(temp.position == ((CornerFrame)corners.toArray()[i]).position){
+                        add = false;
+                    }
+                }
+                if(add){
+                   corners.add(temp);
+                }
+            }
+
+            if(corners.size() == 8){
+                return true;
+            }else{
+                return false;
+            }
+
+            //return firstCorner.position != null;
         }else{
             return false;
         }
+    }
+
+    public CornerFrame walkPath(CornerFrame innitialCorner, World world){
+
+        for(int i = 0; i < innitialCorner.faces.size(); i++){
+            if(!innitialCorner.faces.get(i).isWalked && innitialCorner.faces.get(i).isConnected){
+                EnumSet<Dir> sides = getSidesOfConnectionsFromFrames(getCorner(innitialCorner.position, world, innitialCorner.faces.get(i).aspect), world);//TODO fix error causing line!!!
+                CornerFrame corner = new CornerFrame(sides.contains(Dir.posX), sides.contains(Dir.negX), sides.contains(Dir.posY), sides.contains(Dir.negY), sides.contains(Dir.posZ), sides.contains(Dir.negZ), getCorner(innitialCorner.position, world, innitialCorner.faces.get(i).aspect));
+                innitialCorner.faces.get(i).isWalked = true;
+                for(int ii = 0; ii < innitialCorner.faces.size(); ii++){
+                    if(Dir.oposite(innitialCorner.faces.get(i).aspect) == innitialCorner.faces.get(ii).aspect){
+                        innitialCorner.faces.get(ii).isWalked = true;
+                    }
+                }
+                return corner;
+            }
+        }
+
+        return null;
     }
 
     public int getNumberOfAdjacentFrames(Vector3 blockPos, World world){
@@ -205,8 +250,13 @@ public class BlockScanner extends BlockMyRocket{
         return null;
     }
 
-    enum Dir {
-        posX, posY, posZ, negX, negY, negZ
+    public enum Dir {
+        posX, posY, posZ, negX, negY, negZ;
+
+        public static Dir oposite(Dir dir){
+            return dir == Dir.posX ? Dir.negX : dir == Dir.negX ? Dir.negX : dir == Dir.posY ? Dir.negY : dir == Dir.negY ? Dir.posY : dir == Dir.posZ ? Dir.negZ : Dir.posZ;
+        }
+
     }
 
     Vector3 getNextFrame(Vector3 pos, World world, Dir dir) {
@@ -239,7 +289,7 @@ public class BlockScanner extends BlockMyRocket{
     }
 
     public Vector3 getCorner(Vector3 pos, World world, Dir dir) {
-        Vector3 result = pos.clone();
+        Vector3 result = pos.clone();//TODO delete
         Vector3 nextFramePos = pos.clone();
         while (true) {
             nextFramePos = getNextFrame(nextFramePos, world, dir);
@@ -307,3 +357,50 @@ class PosBlock {
     }
 }
 
+class CornerFrame {
+    Vector3 position;
+    List<BlockFace> faces = new ArrayList<BlockFace>();
+
+    public CornerFrame(boolean posX, boolean negX, boolean posY, boolean negY, boolean posZ, boolean negZ){
+        faces.add(new BlockFace(posX, false, BlockScanner.Dir.posX));
+        faces.add(new BlockFace(negX, false, BlockScanner.Dir.negX));
+        faces.add(new BlockFace(posY, false, BlockScanner.Dir.posY));
+        faces.add(new BlockFace(negY, false, BlockScanner.Dir.negY));
+        faces.add(new BlockFace(posZ, false, BlockScanner.Dir.posZ));
+        faces.add(new BlockFace(negZ, false, BlockScanner.Dir.negZ));
+    }
+
+    public CornerFrame(boolean posX, boolean negX, boolean posY, boolean negY, boolean posZ, boolean negZ, Vector3 _position){
+        faces.add(new BlockFace(posX, false, BlockScanner.Dir.posX));
+        faces.add(new BlockFace(negX, false, BlockScanner.Dir.negX));
+        faces.add(new BlockFace(posY, false, BlockScanner.Dir.posY));
+        faces.add(new BlockFace(negY, false, BlockScanner.Dir.negY));
+        faces.add(new BlockFace(posZ, false, BlockScanner.Dir.posZ));
+        faces.add(new BlockFace(negZ, false, BlockScanner.Dir.negZ));
+        position = _position;
+    }
+
+    public CornerFrame(boolean createFacesAsDeafult){
+        if (createFacesAsDeafult){
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.posX));
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.negX));
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.posY));
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.negY));
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.posZ));
+            faces.add(new BlockFace(false, false, BlockScanner.Dir.negZ));
+        }
+    }
+}
+
+class BlockFace {
+    BlockScanner.Dir aspect;
+    boolean isConnected;
+    boolean isWalked;
+
+    public BlockFace(boolean connected, boolean walked, BlockScanner.Dir direction){
+        aspect = direction;
+        isWalked = walked;
+        isConnected = connected;
+    }
+
+}
